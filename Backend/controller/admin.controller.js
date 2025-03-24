@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 export const assign = async (req, res) => {
-  console.log("i am inside the assign function");
     const { leaderId, userIds } = req.body;
     if (!leaderId || !userIds || !Array.isArray(userIds) || userIds.length === 0) {
       return res.status(400).json({ message: "LeaderId and an array of userIds are required" });
@@ -25,7 +24,7 @@ export const assign = async (req, res) => {
 
 // ✅ Update user
 export const updateUser =  async (req, res) => {
-  console.log("PUT /admin/update-user called with id:", req.params.id);
+
   try {
     const { id } = req.params;
     const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
@@ -40,7 +39,6 @@ export const updateUser =  async (req, res) => {
 
 // ✅ Delete user
 export const deleteUser = async (req, res) => {
-  console.log("DELETE /admin/delete-user called with id:", req.params.id);
   try {
     const { id } = req.params;
     const deletedUser = await User.findByIdAndDelete(id);
@@ -55,20 +53,15 @@ export const deleteUser = async (req, res) => {
 
 export const login = async (req,res)=>{
   try {
-  console.log(req.body);
   const {email,password} = req.body;
-  console.log(email,password);
 
   let user = await User.findOne({email});
-  console.log(user);
   if(!user) return res.status(500).json({ message: 'Something went wrong' });
    
   // Compare the password
   const isPasswordValid = await bcrypt.compare(password, user.password);
-  console.log("kjahskjhgsajf",isPasswordValid);
   if (!isPasswordValid) return res.status(400).json({ message: 'Something went wrong!' });
   
-  console.log(user);
   if (!user.isAdmin) return res.status(400).json({ message: "You do not have permission to access the admin panel."});
 
 

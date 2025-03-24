@@ -2,8 +2,6 @@ import jwt from 'jsonwebtoken';
 
 export const protectRoute =  (req, res, next) => {
     const token = req.cookies.token;
-    console.log("i ma in protected routes");
-    console.log(token);
     // If token is not found
     if (!token) {
       return res.status(401).json({ message: 'Not authorized, no token' });

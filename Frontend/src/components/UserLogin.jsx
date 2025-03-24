@@ -28,7 +28,6 @@ const CreateUser = () => {
       if (response.ok) {
         alert("User Login successfully!");
         const data = await response.json();
-        console.log(data);
       } else {
         alert("Error creating user.");
       }
@@ -38,18 +37,15 @@ const CreateUser = () => {
   };
   const handle = async (e) => {
     e.preventDefault();
-    console.log("i am fetching");
      
     try {
       const response = await fetch('http://localhost:4000/user/get-wallet', {
         method: 'GET',
         credentials: 'include' 
       });
-      console.log("i am returning");
       if (response.ok) {
         alert("get user wallet sucessfully");
         const data = await response.json();
-        console.log(data);
       } else {
         alert("Error creating user.");
       }

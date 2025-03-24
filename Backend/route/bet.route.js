@@ -4,8 +4,8 @@ import { protectRoute } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('/place-bet',betPlace);
-router.get('/getBets',getBet);
+router.post('/place-bet',protectRoute,betPlace);
+router.get('/getBets',protectRoute,getBet);
 
 
 
