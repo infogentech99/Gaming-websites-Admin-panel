@@ -15,6 +15,6 @@ router.post('/register',register);
 router.post('/login',login);
 router.get('/get-users', userdata);
 router.get('/logout', logout);
-router.get('/get-wallet',protectRoute, walletData);
+router.get('/get-wallet', walletData);
 
 export default router;

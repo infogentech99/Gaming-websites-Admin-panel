@@ -5,7 +5,6 @@ import wallet from '../model/wallet.model.js';
 import { updateUser } from './admin.controller.js';
 
 export const register = async (req, res)=>{
-  console.log("POST /admin/create-user called with body:", req.body);
   try {
     const { username, password, email, contact, role, status ,balance=0} = req.body;
     if (!username || !password || !email || !contact || !role || !status ) {

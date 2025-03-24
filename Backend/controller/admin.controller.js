@@ -1,5 +1,7 @@
 // import postModel from '../model/post.model.js';
 import User from '../model/user.model.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 export const assign = async (req, res) => {
   console.log("i am inside the assign function");
@@ -51,72 +53,35 @@ export const deleteUser = async (req, res) => {
   }
 }
 
+export const login = async (req,res)=>{
+  try {
+  console.log(req.body);
+  const {email,password} = req.body;
+  console.log(email,password);
 
-// export const createNewPost = async (req,res)=>{
-//   let user = await userModel.findOne({email:req.user.email});
-//   const {content} =req.body;
-//   const post = await postModel.create({
-//       user : user._id,
-//       content
-//   });
-//   user.posts.push(post._id);
-//   await user.save();
-//   return res.status(200).json({ message: 'Upload New Post successful' });
-// }
-
-// export const getPost=async (req,res)=>{
-//   try {
-//       const posts = await postModel.find({}).populate('user');
-//       res.status(200).json(posts);
-      
-//   } catch (error) {
-//       console.log("Error: ",error);
-//       res.status(500).json(error);
-//   }
-// };
-
-// export const updatePost = async (req,res)=>{
-//     try {
-//       const post = await postModel.findOneAndUpdate({_id : req.params.id} , {content : req.body.content});
-//       return res.status(200).json({ message: 'Edit Post successful' });
-//     } catch (error) {
-//       console.log("Error: ",error);
-//       res.status(500).json(error);
-//     }
-//   };
-
-// export const getOwnPost = async (req,res)=>{
-// try { 
-//    const user = await userModel.findOne({_id : req.user.userid }).populate('posts');
-//   return res.status(200).json({
-//     message: 'request successful', 
-//     posts : user.posts,
-// })
+  let user = await User.findOne({email});
+  console.log(user);
+  if(!user) return res.status(500).json({ message: 'Something went wrong' });
+   
+  // Compare the password
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  console.log("kjahskjhgsajf",isPasswordValid);
+  if (!isPasswordValid) return res.status(400).json({ message: 'Something went wrong!' });
   
-// } catch (error) {
-//   res.status(500).json({ message: 'Server error', error });
-// }
+  console.log(user);
+  if (!user.isAdmin) return res.status(400).json({ message: "You do not have permission to access the admin panel."});
 
-// };
 
-// export const deletePost = async(req,res) =>{
-//   try {
-//     const post = await postModel.findOne({_id : req.params.id});
-//     if (!post) {
-//       return res.status(404).json({ message: 'Post not found' });
-//     }
-//     const user = await userModel.findOne({_id : req.user.userid })
-//     if (!user.posts.includes(post._id)) {
-//       return res.status(403).json({ message: 'Unauthorized to delete this post' });
-//     }
+  // Generate a JWT token
+  const token = jwt.sign({ email: email, userid: user._id }, 'Screate');
+  res.cookie('token', token, { httpOnly: true });
 
-//     user.posts = user.posts.filter(postId => postId.toString() !== post._id.toString());
+  return res.status(200).json({
+    message: 'Login successful',
+  });
 
-//     await postModel.findByIdAndDelete(req.params.id);
-
-//     return res.status(200).json({ message: 'Post deleted successfully' });
-//   } catch (error) {
-//     console.log("Error: ", error);
-//     res.status(500).json({ message: 'Server error', error });
-//   }
-// };
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+  
+}; 

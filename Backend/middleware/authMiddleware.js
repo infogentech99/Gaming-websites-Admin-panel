@@ -11,7 +11,6 @@ export const protectRoute =  (req, res, next) => {
     try {
         let data = jwt.verify(token,'Screate');
         req.user = data;
-      console.log("req.user");
         next();
     }
     catch (error) {

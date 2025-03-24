@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser'; 
 import userRoutes from './route/user.route.js';
 import adminRoutes from './route/admin.route.js';
+import betRoutes from './route/bet.route.js';
 import  settleBets  from './bettingService.js';
 
 const app = express();
@@ -31,6 +32,7 @@ try {
 }
 
 app.use('/user',userRoutes);
+app.use('/bet',betRoutes);
 app.use('/admin',adminRoutes);
 
 app.get('/', (req, res) => {

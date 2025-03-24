@@ -1,8 +1,12 @@
 import express from 'express';
-import { betPlace } from '../controller/bet.controller';
+import { betPlace, getBet } from '../controller/bet.controller.js';
+import { protectRoute } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('//place-bet',betPlace);
+router.post('/place-bet',betPlace);
+router.get('/getBets',getBet);
+
+
 
 export default router;

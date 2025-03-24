@@ -16,7 +16,7 @@ const betSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    type: {
+    betType: {
       type: String,
       required: true,
       trim: true,
@@ -31,12 +31,17 @@ const betSchema = mongoose.Schema(
       required: true,
       min: 1,
     },
-    odds: {
+    etid: {
       type: Number,
       required: true,
       min: 1,
     },
-    potentialPayout: {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    profit: {
       type: Number,
       required: true,
       min: 1,

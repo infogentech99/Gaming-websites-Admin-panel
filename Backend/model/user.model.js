@@ -25,6 +25,10 @@ const userSchema = mongoose.Schema(
       enum: ["active", "inactive"],
       default: "active",
     },
+    isAdmin : {
+      type:Boolean,
+      default:false
+    },
     leaderId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
